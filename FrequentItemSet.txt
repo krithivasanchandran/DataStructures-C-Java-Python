@@ -1,0 +1,70 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class FrequentItemSet {
+
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+		
+		File transactionFileHandler = new File("C:/Users/KRITHIVASAN CHANDRAN/Desktop/proj_1/binaryTransactionDB.txt");
+		File itemSetFileHandler = new File("C:/Users/KRITHIVASAN CHANDRAN/Desktop/proj_1/UniqueItemSet.txt");
+		Scanner newinput = new Scanner(transactionFileHandler);
+		Scanner scanHandler = new Scanner(itemSetFileHandler);
+		PrintWriter writer1 = new PrintWriter("C:/Users/KRITHIVASAN CHANDRAN/Desktop/proj_1/CandidateItemSets.txt", "UTF-8");
+		List<Long> container = new ArrayList<>();
+		List<Long> transactionDB = new ArrayList<>();
+		
+		long startTime = System.currentTimeMillis();
+		
+		while(scanHandler.hasNext()){
+			
+			
+			String getString = scanHandler.nextLine().trim();
+	        int getDelimeterIndex = getString.indexOf("=");
+	        String uniqueItemString = getString.substring(0, getDelimeterIndex);
+	        long unique = Long.parseLong(uniqueItemString,2);
+	        container.add(unique);
+		}
+		scanHandler.close();
+		
+        while(newinput.hasNext()){
+        	
+    		String str = newinput.next().trim();
+    		long transacDBLong = Long.parseLong(str,2); 
+    		transactionDB.add(transacDBLong);
+		}
+        newinput.close();
+        
+        int counter =0 ;
+        for(int i=2;i<container.size();i++){
+        	 long youngthug = container.get(i).longValue();
+				 
+        	for(long tpain : transactionDB ){
+        		 writer1.append(Long.toBinaryString(youngthug) + " ----- " + Long.toBinaryString(tpain) + " ----- "+  Long.toBinaryString((tpain & youngthug)));
+        		 writer1.append("\n");
+        		 long compare = (tpain & youngthug);
+     		 if(compare == tpain){
+     			 counter = counter + 1;
+  			
+     		 }
+        	}
+        	
+        	String krishna = Long.toBinaryString(youngthug);
+        	 writer1.append( " { " +   krishna  + " } " + " : " + counter);
+    		 writer1.append("\n");
+    		 counter = 0;
+        }
+		
+		long endTime = System.currentTimeMillis();
+		long timetaken = startTime - endTime;
+		System.out.println( " TimeTaken =--====> " + timetaken);
+		newinput.close();
+
+	}
+
+}
