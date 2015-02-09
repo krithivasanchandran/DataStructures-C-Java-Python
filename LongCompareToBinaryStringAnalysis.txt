@@ -1,0 +1,69 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+
+public class F1FrequentItemSets {
+
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+		
+		File transactionFileHandler = new File("C:/Users/KRITHIVASAN CHANDRAN/Desktop/proj_1/binaryTransactionDB.txt");
+		File itemSetFileHandler = new File("C:/Users/KRITHIVASAN CHANDRAN/Desktop/proj_1/UniqueItemSet.txt");
+		Scanner newinput = new Scanner(transactionFileHandler);
+		Scanner scanHandler = new Scanner(itemSetFileHandler);
+		PrintWriter writer1 = new PrintWriter("C:/Users/KRITHIVASAN CHANDRAN/Desktop/proj_1/CandidateItemSets2.txt", "UTF-8");
+	//	newinput.useDelimiter(System.getProperty("line.separator")); 
+		List<String> container = new ArrayList<>();
+		List<String> transactionDB = new ArrayList<>();
+
+		long startTime = System.currentTimeMillis();
+		
+		while(scanHandler.hasNext()){
+			
+			
+			String getString = scanHandler.nextLine().trim();
+	        int getDelimeterIndex = getString.indexOf("=");
+	        String uniqueItemString = getString.substring(0, getDelimeterIndex);
+	        container.add(uniqueItemString);
+			
+		}
+		scanHandler.close();
+		
+        while(newinput.hasNext()){
+        	
+    		String str = newinput.next().trim();
+    		transactionDB.add(str);
+		}
+        newinput.close();
+        
+        int counter =0 ;
+        for(int i=0;i<container.size();i++){
+        	String uniqueItemSet = container.get(i);
+        	long uniqueItemSetLongValue = new BigInteger(uniqueItemSet,2).longValue();
+        	Long uniqueObject = new Long(uniqueItemSetLongValue);
+        	
+        	for(String transactionDBValue : transactionDB ){
+        		long transactionLongValue = new BigInteger(transactionDBValue,2).longValue();
+        		Long transactionObjectValue = new Long(transactionLongValue);
+        		
+        		if(uniqueObject.compareTo(transactionObjectValue) == 0){
+    			 counter = counter + 1;
+    		 }
+        	}
+        	 writer1.append( uniqueItemSet+ " : " + counter);
+    		 writer1.append("\n");
+   		 counter = 0;
+        }
+		
+		long endTime = System.currentTimeMillis();
+		long timetaken = startTime - endTime;
+		System.out.println( " TimeTaken =--====> " + timetaken);
+		newinput.close();
+
+	}
+}
